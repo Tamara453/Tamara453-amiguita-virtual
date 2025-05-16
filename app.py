@@ -1,21 +1,38 @@
 
 import streamlit as st
+import streamlit.components.v1 as components
 
-# Colores disponibles
-colores = {
-    "Rojo": "#FF4B4B",
-    "Verde": "#4CAF50",
-    "Azul": "#2196F3",
-    "Amarillo": "#FFEB3B",
-    "Naranja": "#FF9800",
-    "Rosa": "#E91E63"
-}
+# Función para hablar en el navegador
+def decir(texto):
+    components.html(
+        f"""
+        <script>
+        var mensaje = new SpeechSynthesisUtterance("{texto}");
+        window.speechSynthesis.speak(mensaje);
+        </script>
+        """,
+        height=0,
+    )
 
-st.title("🎨 Aprende los Colores")
-st.write("Haz clic en un color:")
+# Título de la app
+st.title("🎨 Amiguita Virtual - Colores divertidos")
 
-# Mostrar botones con los colores
-for color, hex_code in colores.items():
-    if st.button(color):
-        st.markdown(f"<div style='background-color:{hex_code};padding:50px;margin:10px;border-radius:10px'></div>", unsafe_allow_html=True)
-        st.success(f"¡Este es el color {color}!")
+st.write("¡Haz clic en un botón para decir el color!")
+
+# Botones de colores
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button("🔴 Rojo"):
+        decir("Rojo")
+        st.write("Has elegido el color rojo.")
+
+with col2:
+    if st.button("🟢 Verde"):
+        decir("Verde")
+        st.write("Has elegido el color verde.")
+
+with col3:
+    if st.button("🔵 Azul"):
+        decir("Azul")
+        st.write("Has elegido el color azul.")
