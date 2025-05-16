@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 # Estilos CSS para colores y tamaño
@@ -66,4 +65,32 @@ if 'cuento_actual' not in st.session_state:
 
 if st.session_state.cuento_actual != cuento_elegido:
     st.session_state.index = 0
-    st.session_state.cuent_
+    st.session_state.cuento_actual = cuento_elegido
+
+# Mostrar texto actual
+frase = cuentos[cuento_elegido]["texto"][st.session_state.index]
+st.markdown(f"<h3>{frase}</h3>", unsafe_allow_html=True)
+
+# Botones coloridos para navegar
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("⬅️ Anterior") and st.session_state.index > 0:
+        st.session_state.index -= 1
+
+with col2:
+    if st.button("Siguiente ➡️") and st.session_state.index < len(cuentos[cuento_elegido]["texto"]) - 1:
+        st.session_state.index += 1
+
+# Lectura automática con JS
+js = f"""
+<script>
+const utterance = new SpeechSynthesisUtterance("{frase}");
+speechSynthesis.cancel();
+speechSynthesis.speak(utterance);
+</script>
+"""
+
+st.components.v1.html(js)
+
+
